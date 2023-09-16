@@ -1,5 +1,6 @@
+import { curentUser } from "@sgticking235/common";
 import express from "express";
-import { curentUser } from "../middlewares/currenct-user";
+
 const router = express.Router();
 
 router.get("/api/users/currentuser", curentUser,

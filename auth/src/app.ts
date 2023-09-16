@@ -7,8 +7,7 @@ import { currentUserRouter } from "./routes/current-user";
 import { signinRouter } from "./routes/signin";
 import { signoutRouter } from "./routes/signout";
 import { signupRouter } from "./routes/signup";
-import { errorhandler } from "./middlewares/error-handler";
-import { NotFoundError } from "./errors/not-found-error-";
+import { errorhandler, NotFoundError } from "@sgticking235/common";
 
 const app = express();
 app.set('trust proxy', true);

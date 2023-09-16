@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { PasswordService } from "../services/password";
-import { transform } from "typescript";
 
 interface UserAttrs {
     email: string;
