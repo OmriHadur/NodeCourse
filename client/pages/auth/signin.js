@@ -20,11 +20,11 @@ export default () => {
     return <form onSubmit={onSubmit}>
         <h1>Sign in</h1>
         <div className="form-group">
-            <lable>Email</lable>
+            <label>Email</label>
             <input value={email} onChange={e => setEmail(e.target.value)} className="form-control" />
         </div>
         <div className="form-group">
-            <lable>Password</lable>
+            <label>Password</label>
             <input value={password} onChange={e => setPassword(e.target.value)} className="form-control" />
         </div>
         {errors}

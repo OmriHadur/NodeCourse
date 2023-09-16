@@ -2,14 +2,14 @@ import Link from 'next/link'
 
 export default ({ currentUser }) => {
     const links = [
-        !currentUser && { lable: 'Sign Up', href: '/auth/signup' },
-        !currentUser && { lable: 'Sign In', href: '/auth/signin' },
-        currentUser && { lable: 'Sign out', href: '/auth/signout' }
+        !currentUser && { label: 'Sign Up', href: '/auth/signup' },
+        !currentUser && { label: 'Sign In', href: '/auth/signin' },
+        currentUser && { label: 'Sign out', href: '/auth/signout' }
     ]
         .filter(l => l)
-        .map(({ lable, href }) => {
+        .map(({ label, href }) => {
             return <li key={href} className='nav-item'>
-                <Link className='nav-link' href={href}>{lable}</Link>
+                <Link className='nav-link' href={href}>{label}</Link>
             </li>
         })
 
