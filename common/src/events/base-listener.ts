@@ -5,7 +5,7 @@ export abstract class Listener<T extends Event> {
 
     abstract subject: T['subject'];
     abstract queueGroupName: string;
-    abstract onMessage(data: T['data'], msg: Message): void;
+    abstract onMessage(data: T['data'], msg: Message): Promise<void>;
 
     private client: Stan;
     protected actWait = 5 * 1000;
@@ -25,10 +25,10 @@ export abstract class Listener<T extends Event> {
 
     listen() {
         const subcription = this.client.subscribe(this.subject, this.queueGroupName, this.subscriptionOptions());
-        subcription.on('message', (msg: Message) => {
+        subcription.on('message', async (msg: Message) => {
             console.log(`Message recive ${this.subject} / ${this.queueGroupName}`);
             const data = this.parseMessage(msg);
-            this.onMessage(data, msg);
+            await this.onMessage(data, msg);
         });
     }
 

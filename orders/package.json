@@ -1,5 +1,5 @@
 {
-  "name": "tickets",
+  "name": "orders",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,7 +15,7 @@
     ]
   },
   "keywords": [],
-  "ticketsor": "",
+  "ordersor": "",
   "license": "ISC",
   "dependencies": {
     "@sgticking235/common": "^1.0.14",

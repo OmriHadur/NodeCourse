@@ -4,10 +4,10 @@ import { json } from 'body-parser'
 import cookieSession from "cookie-session";
 
 import { curentUser, errorhandler, NotFoundError } from "@sgticking235/common";
-import { createTicket } from "./routes/new";
-import { showTicketRouter } from "./routes/show";
-import { indexTicketsRouter } from "./routes";
-import { updateTicketRouter } from "./routes/update";
+import { createOrder } from "./routes/new";
+import { showOrderRouter } from "./routes/show";
+import { indexOrdersRouter } from "./routes";
+import { deleteOrderRouter } from "./routes/delete";
 
 const app = express();
 app.set('trust proxy', true);
@@ -19,10 +19,10 @@ app.use(
     }));
 
 app.use(curentUser);
-app.use(createTicket);
-app.use(showTicketRouter);
-app.use(indexTicketsRouter);
-app.use(updateTicketRouter);
+app.use(createOrder);
+app.use(showOrderRouter);
+app.use(indexOrdersRouter);
+app.use(deleteOrderRouter);
 
 app.all('*', async () => {
     throw new NotFoundError();

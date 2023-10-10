@@ -1,14 +1,14 @@
-import { requireAuth, validateRequest } from '@sgticking235/common';
 import express, { Request, Response } from 'express'
-import { body } from 'express-validator';
 import { Ticket } from '../models/ticket';
-import { TicketCreatedPublisher } from '../events/publishers/ticket-created-publisher';
+import { NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@sgticking235/common';
+import { body } from 'express-validator';
+import { TicketUpdateublisher } from '../events/publishers/ticket-updated-publisher';
 import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
-router.post(
-    '/api/tickets',
+router.put(
+    '/api/tickets/:id',
     requireAuth,
     [
         body('title')
@@ -20,17 +20,18 @@ router.post(
     ],
     validateRequest,
     async (req: Request, res: Response) => {
+        const id = req.params.id;
+        const ticket = await Ticket.findById(id);
+        if (!ticket)
+            throw new NotFoundError();
+        if (ticket.userId !== req.currentUser!.id)
+            throw new NotAuthorizedError();
         const { title, price } = req.body;
-
-        const ticket = Ticket.build({
-            title,
-            price,
-            userId: req.currentUser!.id
-        });
-
+        ticket.title = title;
+        ticket.price = price;
         await ticket.save();
 
-        await new TicketCreatedPublisher(natsWrapper.client).publish({
+        await new TicketUpdateublisher(natsWrapper.client).publish({
             id: ticket.id,
             version: ticket.version,
             title: ticket.title,
@@ -38,8 +39,7 @@ router.post(
             userId: ticket.userId
         });
 
-        res.status(201)
-            .send(ticket);
+        res.send(ticket);
     });
 
-export { router as createTicket }
+export { router as updateTicketRouter }
