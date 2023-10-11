@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import { OrderStatus } from '@sgticking235/common'
-import { TicketDoc } from "./ticket";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 interface OrderAttrs {
+    id: string;
+    version: number;
+    price: number;
     userId: string;
     status: OrderStatus;
-    expriresAt: Date;
-    ticket: TicketDoc;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
@@ -15,11 +15,10 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 }
 
 interface OrderDoc extends mongoose.Document {
+    version: number;
+    price: number;
     userId: string;
     status: OrderStatus;
-    expriresAt: Date;
-    ticket: TicketDoc;
-    version: number;
 }
 
 const OrderScheme = new mongoose.Schema(
@@ -30,16 +29,11 @@ const OrderScheme = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: Object.values(OrderStatus),
-            default: OrderStatus.Created
-        },
-        expriresAt: {
-            type: mongoose.Schema.Types.Date,
             require: true
         },
-        ticket: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Ticket'
+        price: {
+            type: Number,
+            require: true
         }
     },
     {
@@ -56,9 +50,14 @@ OrderScheme.set('versionKey', 'version');
 OrderScheme.plugin(updateIfCurrentPlugin);
 
 OrderScheme.statics.build = (attrs: OrderAttrs) => {
-    return new Order(attrs);
+    return new Order({
+        _id : attrs.id,
+        price : attrs.price,
+        userId : attrs.userId,
+        status : attrs.status
+    });
 }
 
 const Order = mongoose.model<OrderDoc, OrderModel>('Order', OrderScheme);
 
-export { Order, OrderStatus }
+export { Order }

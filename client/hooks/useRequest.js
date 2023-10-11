@@ -7,14 +7,14 @@ export default ({ url, method, body, onSuccess }) => {
     const doRequest = async () => {
         try {
             const response = await axios[method](url, body);
-            await onSuccess();
+            await onSuccess(response.data);
             return response.data;
         } catch (err) {
             setErrors(
                 <div className='alert alert-danger'>
                     <h4>Opss...</h4>
                     <ul className='my-0'>
-                        {err.response.data.errors?.map(e => <li key={e.message}>{e.message}</li>)}
+                        {err.response?.data.errors?.map(e => <li key={e.message}>{e.message}</li>)}
                     </ul>
                 </div>
             );
