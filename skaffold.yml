@@ -32,6 +32,22 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: omrihadur/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: omrihadur/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
     - image: omrihadur/client
       context: client
       docker:

@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { Ticket } from '../models/ticket';
-import { NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@sgticking235/common';
+import { BadReqeustError, NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@sgticking235/common';
 import { body } from 'express-validator';
 import { TicketUpdateublisher } from '../events/publishers/ticket-updated-publisher';
 import { natsWrapper } from '../nats-wrapper';
@@ -26,6 +26,9 @@ router.put(
             throw new NotFoundError();
         if (ticket.userId !== req.currentUser!.id)
             throw new NotAuthorizedError();
+        if (ticket.orderId)
+            throw new BadReqeustError('reserved');
+
         const { title, price } = req.body;
         ticket.title = title;
         ticket.price = price;

@@ -1,17 +1,18 @@
-import { Listener, NotFoundError, OrderCreatedEvent, OrderStatus, Subjects } from "@sgticking235/common";
+import { Listener, NotFoundError, OrderCancelledEvent, OrderCreatedEvent, OrderStatus, Subjects } from "@sgticking235/common";
 import { Message } from "node-nats-streaming";
 import { queueGroupName } from "./queu-group-name";
 import { Ticket } from "../../models/ticket";
 import { TicketUpdateublisher } from "../publishers/ticket-updated-publisher";
 
-export class OrderCreatedListener extends Listener<OrderCreatedEvent>{
-    readonly subject = Subjects.OrderCreated;
+export class OrderCancelledListener extends Listener<OrderCancelledEvent>{
+    readonly subject = Subjects.OrderCancelled;
     queueGroupName: string = queueGroupName;
-    async onMessage(data: OrderCreatedEvent['data'], msg: Message): Promise<void> {
+
+    async onMessage(data: OrderCancelledEvent['data'], msg: Message): Promise<void> {
         const ticket = await Ticket.findById(data.ticket.id);
         if (!ticket)
             throw new NotFoundError();
-        ticket.orderId = data.id;
+        ticket.orderId = undefined;
         await ticket.save();
         await new TicketUpdateublisher(this.client).publish({
             id: ticket.id,

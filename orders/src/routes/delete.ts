@@ -16,6 +16,8 @@ router.delete(
             throw new NotFoundError();
         if (order.userId !== req.currentUser!.id)
             throw new NotAuthorizedError();
+        if (order.status == OrderStatus.Complate)
+            throw new NotAuthorizedError();
         order.status = OrderStatus.Cancelled;
         await order.save();
         new OrderCancelledublisher(natsWrapper.client).publish({

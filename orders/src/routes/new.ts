@@ -29,7 +29,7 @@ router.post(
             throw new BadReqeustError('existingOrder');
 
         const expration = new Date();
-        expration.setSeconds(expration.getSeconds() + 15 * 60);
+        expration.setSeconds(expration.getSeconds() + 1 * 60);
 
         const order = Order.build({
             status: OrderStatus.Created,
