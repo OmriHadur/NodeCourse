@@ -3,7 +3,6 @@ import axios from 'axios'
 
 export default ({ url, method, body, onSuccess }) => {
     const [errors, setErrors] = useState([]);
-
     const doRequest = async (props = {}) => {
         try {
             const response = await axios[method](url,

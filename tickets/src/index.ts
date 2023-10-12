@@ -21,7 +21,6 @@ if (!process.env.NATS_CLUSTER_ID)
     throw new Error('NATS_CLUSTER_ID missing');
 
 const start = async () => {
-
     await natsWrapper.connect(
         process.env.NATS_CLUSTER_ID!,
         process.env.NATS_CLIENT_ID!,
