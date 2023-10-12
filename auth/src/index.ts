@@ -9,7 +9,6 @@ if (!process.env.MONGO_URL)
     throw new Error('MONGO_URL missing');
 
 const start = async () => {
-    console.log("stat");
     try {
         await mongoose.connect(process.env.MONGO_URL!);
     } catch (error) {
